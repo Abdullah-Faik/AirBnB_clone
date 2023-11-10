@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import uuid
 from datetime import datetime
+from models.engine.file_storage import *
 '''
     class BaseModel defines all common attributes/methods for other classes.
 
@@ -45,6 +46,8 @@ class BaseModel:
         '''This function is called after any modification in the instance
         to change the value of updated_at attribute'''
         self.updated_at = datetime.now()
+        
+
 
     def __str__(self):
         '''this function returns the string representation of
