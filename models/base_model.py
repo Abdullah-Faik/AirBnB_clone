@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+import models
 import uuid
 from datetime import datetime
 from models.engine.file_storage import *
+
 '''
     class BaseModel defines all common attributes/methods for other classes.
 
@@ -36,18 +38,18 @@ class BaseModel:
             regex_Str = "%Y-%m-%dT%H:%M:%S.%f"
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    self.__dict__[key] = datetime.strptime(value, regex_Str)
+                    setattr(self, key, datetime.strptime(value, regex_Str))
                 elif key == "__class__":
                     continue
                 else:
-                    self.__dict__[key] = value
+                    setattr(self, key, value)
+        models.storage.new(self)
 
     def save(self):
         '''This function is called after any modification in the instance
         to change the value of updated_at attribute'''
         self.updated_at = datetime.now()
-        
-
+        models.storage.save()
 
     def __str__(self):
         '''this function returns the string representation of
@@ -74,7 +76,7 @@ class BaseModel:
                                      str(self.created_at.isoformat())})
             elif key == "updated_at":
                 instanceDict.update({"updated_at":
-                                     str(self.created_at.isoformat())})
+                                     str(self.updated_at.isoformat())})
             else:
                 instanceDict.update({key: value})
 

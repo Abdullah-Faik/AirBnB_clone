@@ -10,7 +10,7 @@ import uuid
 class testBaseModel(unittest.TestCase):
     '''
         class testBaseModel inherits from unittest.TestCase
-        it has all the test case functions needed to test BaseModel class
+        it has all the test case needed to test BaseModel class
     '''
 
     def test_init(self):
