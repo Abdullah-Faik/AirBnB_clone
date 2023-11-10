@@ -5,7 +5,7 @@ import json
 import readline
 import sys
 import shlex
-from models import storage
+from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 
 
@@ -14,7 +14,6 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
     my_class = ["BaseModel"]
-    my_ids = []
 
     def do_quit(self, line):
         """this commnad is used to close the console"""
@@ -46,8 +45,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             obj = BaseModel()
             print(obj.id)
-            HBNBCommand.my_ids.append(obj)
-            obj.save()  # TODO: ADD SAVE METHOD TO BASE CLASS
+            obj.save()
 
     def help_create(self):
         """print help message for user"""
@@ -66,10 +64,11 @@ class HBNBCommand(cmd.Cmd):
         elif values["id"] is None:
             print("** instance id missing **")
             return
+        try:
+            print(str())
+        
 
-        for i in HBNBCommand.my_ids:
-            if i.id == values["id"]:
-                print(i)
+
         print("** instance id missing **")
 
     def help_show(self):
