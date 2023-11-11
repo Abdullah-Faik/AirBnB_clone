@@ -48,6 +48,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             obj = BaseModel()
             print(obj.id)
+            storage.new(obj)
             obj.save()
 
     def help_create(self):
