@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 """This is the console for the AirBnB project"""
 import cmd
-import json
-import readline
-import sys
 import shlex
 from models.base_model import BaseModel
 from models import storage
