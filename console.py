@@ -30,11 +30,12 @@ class HBNBCommand(cmd.Cmd):
 
     def help_EOF(self):
         """print help message for user"""
-        print("quit the consloefrom keyboard or after reading a file")
+        print("quit the consloe from keyboard or after reading a file")
         print("[USAGE]:\t Ctrl+D,Ctrl+Z")
 
     def emptyline(self):
         """this method is called when user input empty line"""
+        pass
 
     def do_create(self, line):
         """ create new model"""
@@ -47,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             obj = BaseModel()
             print(obj.id)
-            obj.save()
+            storage.new(obj)
 
     def help_create(self):
         """print help message for user"""
