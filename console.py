@@ -101,7 +101,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             del storage.all()[values["class_name"]+"."+values["id"]]
             storage.save()
-            storage.reload()
+            # storage.reload()
 
         except KeyError:
             print("** instance id missing **")
@@ -182,12 +182,7 @@ class HBNBCommand(cmd.Cmd):
         args = []
 
         try:
-            type(line) is str
-        except TypeError:
-            return kwrds
-
-        try:
-            args = line.split()
+            args = shlex.split(line)
         except ValueError:
             return kwrds
 
@@ -216,6 +211,16 @@ class HBNBCommand(cmd.Cmd):
             kwrds["value"] = None
 
         return kwrds
+
+    @staticmethod
+    def to_type(value):
+        """convert the value to type"""
+        if value.isdigit():
+            return int(value)
+        try:
+            return float(value)
+        except ValueError:
+            return value
 
 
 if __name__ == '__main__':
