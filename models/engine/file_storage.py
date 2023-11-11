@@ -2,6 +2,7 @@
 import json
 import os
 from models.base_model import BaseModel
+from models.user import User
 
 '''
     this module serializes instances to a JSON file
@@ -53,7 +54,7 @@ class FileStorage:
         no exception should be raised)'''
 
         # dictionary containes all user defined classes in the project
-        definedClasses = {'BaseModel': BaseModel}
+        definedClasses = {'BaseModel': BaseModel, 'User': User}
 
         if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, "r") as jsonFile:
