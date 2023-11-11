@@ -71,7 +71,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         try:
-            print(values["class_name"], values["id"])
             print(str(storage.all()[
                   values["class_name"] + "." + values["id"]]))
 
@@ -175,8 +174,6 @@ class HBNBCommand(cmd.Cmd):
         """show help message for update command"""
         print("update the class argumens")
         print("[USAGE]:\t update <class name> <id> <attribute name> <value>")
-
-
 
     @staticmethod
     def __spliter(line: str):
