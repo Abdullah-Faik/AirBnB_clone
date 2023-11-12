@@ -11,13 +11,13 @@ class testReview(unittest.TestCase):
         it has all the test case needed to test Review class
     '''
 
-
     def test_attributes(self):
         '''this function tests the attributes'''
 
         self.assertIsInstance(Review.place_id, str)
         self.assertIsInstance(Review.user_id, str)
         self.assertIsInstance(Review.text, str)
+
 
 if __name__ == "__main__":
     unittest.main()

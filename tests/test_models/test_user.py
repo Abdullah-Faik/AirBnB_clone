@@ -11,7 +11,6 @@ class testUser(unittest.TestCase):
         it has all the test cases needed to test User class
     '''
 
-
     def test_attributes(self):
         '''This method tests User class attributes'''
 
@@ -19,7 +18,6 @@ class testUser(unittest.TestCase):
         self.assertIsInstance(User.password, str)
         self.assertIsInstance(User.first_name, str)
         self.assertIsInstance(User.last_name, str)
-
 
 
 if __name__ == "__main__":

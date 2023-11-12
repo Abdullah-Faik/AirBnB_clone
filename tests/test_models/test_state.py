@@ -11,11 +11,11 @@ class testState(unittest.TestCase):
         it has all the test case needed to test State class
     '''
 
-
     def test_attributes(self):
         '''this function tests the attributes'''
 
         self.assertIsInstance(State.name, str)
+
 
 if __name__ == "__main__":
     unittest.main()

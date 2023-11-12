@@ -11,7 +11,6 @@ class testPlace(unittest.TestCase):
         it has all the test case needed to test place class
     '''
 
-
     def test_attributes(self):
         '''this function tests the attributes'''
 
@@ -26,6 +25,7 @@ class testPlace(unittest.TestCase):
         self.assertIsInstance(Place.latitude, float)
         self.assertIsInstance(Place.longitude, float)
         self.assertIsInstance(Place.amenity_ids, list)
+
 
 if __name__ == "__main__":
     unittest.main()
