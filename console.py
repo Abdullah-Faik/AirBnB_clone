@@ -28,7 +28,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, line):
         """this commnad is used to close the console"""
-        quit()
+        return True
 
     def help_quit(self):
         """print help message for user"""
@@ -37,7 +37,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """This command is  used to close the console"""
-        quit()
+        return True
 
     def help_EOF(self):
         """print help message for user"""
