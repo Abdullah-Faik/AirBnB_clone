@@ -213,7 +213,11 @@ class HBNBCommand(cmd.Cmd):
         if line is not None and len(line) != 0:
             class_names = "|".join(HBNBCommand.my_class.keys())
             function_names = "|".join(HBNBCommand.FuncNames_List)
-            regex_pattern = r"\b(?:{})\.(?:{})\((?:(?:\"[^\"]*\"|'[^']*')\s*(?:,\s*(?:\"[^\"]*\"|'[^']*'))*)?\)".format(class_names, function_names)
+            regex_pattern = (
+                r"\b(?:{})\.(?:{})\("
+                r"(?:(?:\"[^\"]*\"|'[^']*')\s*"
+                r"(?:,\s*(?:\"[^\"]*\"|'[^']*'))*)?\)"
+                ).format(class_names, function_names)
 
             matches = re.findall(regex_pattern, line)
             if matches:
@@ -229,27 +233,26 @@ class HBNBCommand(cmd.Cmd):
                 myArguments = remains
 
                 if len(className) != 0 and len(functionName) != 0:
-                    argumentsWithSpace = "" 
+                    argumentsWithSpace = ""
                     if len(myArguments) != 0:
                         delimiter = r",\s*"
-                        argumentsWithSpace = re.sub(delimiter, " ", myArguments)
+                        argumentsWithSpace = re.sub(delimiter, " ",
+                                                    myArguments)
                         newCommand = f"{className} {myArguments}"
                         eval(f"self.do_{functionName}('{newCommand}')")
                         return True
+                    else:
+                        newCommand = className
+                        eval(f"self.do_{functionName}('{newCommand}')")
             else:
                 return False
         else:
             return False
 
-    def validate_advancedCommands(self, matches):
-        '''validate the command in the advanced tasks'''
-        pass
-            
-
-
     def default(self, line: str):
         # my notes on this methods:
-        # this method is worked fine when i nned to do commands doesn't need to send args
+        # this method is worked fine when i nned to do
+        # commands doesn't need to send args
         # but when i need to send args it's not working
         # so i need to update this method to works with args and kwargs
 
@@ -260,9 +263,8 @@ class HBNBCommand(cmd.Cmd):
                   "destroy()": self.do_destroy,
                   "update()": self.do_update
                   }
-        
+
         if (self.is_It_Advanced(line)):
-            self.validate_advancedCommands(line)
             return
 
         try:
@@ -276,7 +278,7 @@ class HBNBCommand(cmd.Cmd):
         if cmd not in my_cmd:
             print("*** Unknown syntax: {}".format(line))
             return
-        eval("self.{}('{}')".format(my_cmd[cmd].__name__, clss))
+        # eval("self.{}('{}')".format(my_cmd[cmd].__name__, clss))
 
     @staticmethod
     def __spliter(line: str):

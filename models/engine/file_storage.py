@@ -59,9 +59,15 @@ class FileStorage:
         no exception should be raised)'''
 
         # dictionary containes all user defined classes in the project
-        definedClasses = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                          'State': State, 'City': City, 'Review': Review,
-                           'Amenity': Amenity}
+        definedClasses = {
+            'BaseModel': BaseModel,
+            'User': User,
+            'Place': Place,
+            'State': State,
+            'City': City,
+            'Review': Review,
+            'Amenity': Amenity
+        }
 
         if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, "r") as jsonFile:
