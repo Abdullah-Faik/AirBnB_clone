@@ -229,6 +229,7 @@ class HBNBCommand(cmd.Cmd):
                 functionName = parts2[0]
                 remains = parts2[1]
                 remains = remains.replace(")", "")
+                remains = remains.replace(",", "")
 
                 myArguments = remains
 
