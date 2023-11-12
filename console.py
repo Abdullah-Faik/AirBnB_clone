@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This is the console for the AirBnB project"""
 import cmd
+import re
 import shlex
 from models.base_model import BaseModel
 from models import storage
@@ -55,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
         else:
-            obj = HBNBCommand.my_class[line]()
+            obj = eval(line + "()")
             print(obj.id)
             storage.new(obj)
             obj.save()
@@ -87,9 +88,12 @@ class HBNBCommand(cmd.Cmd):
 
         except KeyError:
             print("** no instance found **")
+            return
 
     def help_show(self):
-        """show help message for show command"""
+        """
+        show help message for show command
+        """
         print("print info about the class")
         print("[USAGE]:\t show <class name> <id>")
 
@@ -123,6 +127,7 @@ class HBNBCommand(cmd.Cmd):
         print("[USAGE]:\t destroy <class name> <id>")
 
     def do_all(self, line):
+        """print all the class"""
         keys = HBNBCommand.__spliter(line)
         users = []
         if (len(keys.items())) == 0:
@@ -195,6 +200,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             args = shlex.split(line)
         except ValueError:
+            print('** missing closing quotation **')
             return kwrds
 
         try:
