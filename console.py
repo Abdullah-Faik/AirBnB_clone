@@ -191,6 +191,49 @@ class HBNBCommand(cmd.Cmd):
         print("update the class argumens")
         print("[USAGE]:\t update <class name> <id> <attribute name> <value>")
 
+    def default(self, line):
+        """called when the command prefix is not recognized"""
+
+        commands = {
+            'show': self.do_show,
+            'destroy': self.do_destroy,
+            'all': self.do_all,
+            'count': self.do_count,
+            'update': self.do_update
+        }
+
+        try:
+            command = re.findall(
+                r"^.+\.(.+)\(.*\)",
+                line
+            )[0]
+        except IndexError:
+            print(f'** invalid syntax: {line} **')
+            return
+
+        if command not in commands:
+            print(f'** command not exist: {command} **')
+            return
+
+        cls_name = re.findall(
+            r"^(.+)\..+\(.*\)",
+            line
+        )[0]
+
+        args = re.findall(r"^.+\..+\((.*)\)", line)[0]
+
+        if len(re.findall(r'"', args)) % 2 != 0:
+            print('** missing closing quotation **')
+            return
+
+        args = re.sub(
+            r',(?=(?:[^"]*"[^"]*")*[^"]*$)',
+            '',
+            args
+        )
+
+        commands[command](f'{cls_name} {args}')
+
     @staticmethod
     def __spliter(line: str):
         """split the line into args"""
