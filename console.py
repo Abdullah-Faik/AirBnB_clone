@@ -25,6 +25,7 @@ class HBNBCommand(cmd.Cmd):
                 "Amenity": Amenity,
                 "Place": Place,
                 "Review": Review}
+    FuncNames_List = ["all", "count", "show", "destroy", "update"]
 
     def do_quit(self, line):
         """this commnad is used to close the console"""
@@ -69,6 +70,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """print info about the class"""
+
         values = HBNBCommand.__spliter(line)
 
         if values["class_name"] is None:
@@ -147,13 +149,26 @@ class HBNBCommand(cmd.Cmd):
                     users.append(str(val))
         print(users)
 
+    def do_count(self, line):
+        '''counts the instances of a class'''
+        keys = HBNBCommand.__spliter(line)
+        counter = 0
+
+        if keys["class_name"] not in HBNBCommand.my_class:
+            print("** class doesn't exist **")
+            return
+        else:
+            for key, val in storage.all().items():
+                fword, _ = key.split(".")
+                if fword == keys["class_name"]:
+                    counter += 1
+        print(counter)
+
     def help_all(self):
         """show help message for all command"""
         print("print all the class")
         print("[USAGE]:\t all <class name>")
 
-    def do_count(self, line):
-        pass
     def do_update(self, line):
         """update the class argumens"""
 
@@ -193,6 +208,45 @@ class HBNBCommand(cmd.Cmd):
         print("update the class argumens")
         print("[USAGE]:\t update <class name> <id> <attribute name> <value>")
 
+    def is_It_Advanced(self, line):
+
+        if line is not None and len(line) != 0:
+            class_names = "|".join(HBNBCommand.my_class.keys())
+            function_names = "|".join(HBNBCommand.FuncNames_List)
+            regex_pattern = r"\b(?:{})\.(?:{})\((?:(?:\"[^\"]*\"|'[^']*')\s*(?:,\s*(?:\"[^\"]*\"|'[^']*'))*)?\)".format(class_names, function_names)
+
+            matches = re.findall(regex_pattern, line)
+            if matches:
+                parts1 = matches[0].split(".", 1)
+                className = parts1[0]
+                remains = parts1[1]
+
+                parts2 = remains.split("(", 1)
+                functionName = parts2[0]
+                remains = parts2[1]
+                remains = remains.replace(")", "")
+
+                myArguments = remains
+
+                if len(className) != 0 and len(functionName) != 0:
+                    argumentsWithSpace = "" 
+                    if len(myArguments) != 0:
+                        delimiter = r",\s*"
+                        argumentsWithSpace = re.sub(delimiter, " ", myArguments)
+                        newCommand = f"{className} {myArguments}"
+                        eval(f"self.do_{functionName}('{newCommand}')")
+                        return True
+            else:
+                return False
+        else:
+            return False
+
+    def validate_advancedCommands(self, matches):
+        '''validate the command in the advanced tasks'''
+        pass
+            
+
+
     def default(self, line: str):
         # my notes on this methods:
         # this method is worked fine when i nned to do commands doesn't need to send args
@@ -206,6 +260,10 @@ class HBNBCommand(cmd.Cmd):
                   "destroy()": self.do_destroy,
                   "update()": self.do_update
                   }
+        
+        if (self.is_It_Advanced(line)):
+            self.validate_advancedCommands(line)
+            return
 
         try:
             clss, cmd = line.split(".")
