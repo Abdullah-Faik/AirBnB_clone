@@ -62,7 +62,6 @@ class HBNBCommand(cmd.Cmd):
             obj.save()
             print(obj.id)
 
-
     def help_create(self):
         """print help message for user"""
         print("create new model")
@@ -153,6 +152,8 @@ class HBNBCommand(cmd.Cmd):
         print("print all the class")
         print("[USAGE]:\t all <class name>")
 
+    def do_count(self, line):
+        pass
     def do_update(self, line):
         """update the class argumens"""
 
@@ -191,6 +192,33 @@ class HBNBCommand(cmd.Cmd):
         """show help message for update command"""
         print("update the class argumens")
         print("[USAGE]:\t update <class name> <id> <attribute name> <value>")
+
+    def default(self, line: str):
+        # my notes on this methods:
+        # this method is worked fine when i nned to do commands doesn't need to send args
+        # but when i need to send args it's not working
+        # so i need to update this method to works with args and kwargs
+
+        """anther way to call the command"""
+        my_cmd = {"all()": self.do_all,
+                  "count()": self.do_count,
+                  "show()": self.do_show,
+                  "destroy()": self.do_destroy,
+                  "update()": self.do_update
+                  }
+
+        try:
+            clss, cmd = line.split(".")
+        except ValueError:
+            print("*** Unknown syntax: {}".format(line))
+            return
+        if clss not in HBNBCommand.my_class:
+            print("*** Unknown syntax: {}".format(line))
+            return
+        if cmd not in my_cmd:
+            print("*** Unknown syntax: {}".format(line))
+            return
+        eval("self.{}('{}')".format(my_cmd[cmd].__name__, clss))
 
     @staticmethod
     def __spliter(line: str):
