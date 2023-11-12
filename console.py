@@ -50,16 +50,18 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """ create new model"""
-        if line is None:
+        values = HBNBCommand.__spliter(line)
+        if values["class_name"] is None:
             print("** class name missing **")
 
-        elif line not in HBNBCommand.my_class:
+        elif values["class_name"] not in HBNBCommand.my_class:
             print("** class doesn't exist **")
 
         else:
-            obj = eval(line + "()")
-            print(obj.id)
+            obj = HBNBCommand.my_class[values["class_name"]]()
             obj.save()
+            print(obj.id)
+
 
     def help_create(self):
         """print help message for user"""
