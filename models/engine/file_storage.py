@@ -2,6 +2,12 @@
 import json
 import os
 from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.review import Review
+from models.amenity import Amenity
+from models.city import City
+from models.state import State
 
 '''
     this module serializes instances to a JSON file
@@ -40,8 +46,7 @@ class FileStorage:
     def save(self):
         ''' serializes __objects to the JSON file (path: __file_path)'''
         object_dict = {}
-        objs = FileStorage.__objects
-        for key, value in objs.items():
+        for key, value in FileStorage.__objects.items():
             object_dict[key] = value.to_dict()
 
         with open(FileStorage.__file_path, "w") as jsonFile:
@@ -54,7 +59,9 @@ class FileStorage:
         no exception should be raised)'''
 
         # dictionary containes all user defined classes in the project
-        definedClasses = {'BaseModel': BaseModel}
+        definedClasses = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                          'State': State, 'City': City, 'Review': Review,
+                           'Amenity': Amenity}
 
         if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, "r") as jsonFile:

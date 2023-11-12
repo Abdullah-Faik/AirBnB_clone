@@ -4,13 +4,25 @@ import cmd
 import shlex
 from models.base_model import BaseModel
 from models import storage
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from models.place import Place
 
 
 class HBNBCommand(cmd.Cmd):
     """this class about the console for airbnb project"""
 
     prompt = "(hbnb) "
-    my_class = ["BaseModel"]
+    my_class = {"BaseModel": BaseModel,
+                "User": User,
+                "State": State,
+                "City": City,
+                "Amenity": Amenity,
+                "Place": Place,
+                "Review": Review}
 
     def do_quit(self, line):
         """this commnad is used to close the console"""
@@ -27,11 +39,12 @@ class HBNBCommand(cmd.Cmd):
 
     def help_EOF(self):
         """print help message for user"""
-        print("quit the consloefrom keyboard or after reading a file")
+        print("quit the consloe from keyboard or after reading a file")
         print("[USAGE]:\t Ctrl+D,Ctrl+Z")
 
     def emptyline(self):
         """this method is called when user input empty line"""
+        pass
 
     def do_create(self, line):
         """ create new model"""
@@ -42,8 +55,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
         else:
-            obj = BaseModel()
+            obj = HBNBCommand.my_class[line]()
             print(obj.id)
+            storage.new(obj)
             obj.save()
 
     def help_create(self):
