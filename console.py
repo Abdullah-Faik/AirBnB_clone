@@ -210,6 +210,8 @@ class HBNBCommand(cmd.Cmd):
 
         try:
             id = args[1]
+            if id[0] == '"':
+                id = id[1:-1]
             kwrds["id"] = id
         except IndexError:
             kwrds["id"] = None
