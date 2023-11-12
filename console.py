@@ -3,6 +3,7 @@
 import cmd
 import re
 import shlex
+from datetime import datetime
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -58,7 +59,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             obj = eval(line + "()")
             print(obj.id)
-            storage.new(obj)
             obj.save()
 
     def help_create(self):
@@ -130,8 +130,6 @@ class HBNBCommand(cmd.Cmd):
         """print all the class"""
         keys = HBNBCommand.__spliter(line)
         users = []
-        if (len(keys.items())) == 0:
-            return
 
         if keys["class_name"] is None:
             print([str(val) for val in storage.all().values()])
@@ -181,6 +179,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             obj = storage.all()[values["class_name"]+"."+values["id"]]
             setattr(obj, values["attr"], values["value"])
+            obj.updated_at = datetime.now()
             obj.save()
 
         except KeyError:
@@ -190,49 +189,6 @@ class HBNBCommand(cmd.Cmd):
         """show help message for update command"""
         print("update the class argumens")
         print("[USAGE]:\t update <class name> <id> <attribute name> <value>")
-
-    def default(self, line):
-        """called when the command prefix is not recognized"""
-
-        commands = {
-            'show': self.do_show,
-            'destroy': self.do_destroy,
-            'all': self.do_all,
-            'count': self.do_count,
-            'update': self.do_update
-        }
-
-        try:
-            command = re.findall(
-                r"^.+\.(.+)\(.*\)",
-                line
-            )[0]
-        except IndexError:
-            print(f'** invalid syntax: {line} **')
-            return
-
-        if command not in commands:
-            print(f'** command not exist: {command} **')
-            return
-
-        cls_name = re.findall(
-            r"^(.+)\..+\(.*\)",
-            line
-        )[0]
-
-        args = re.findall(r"^.+\..+\((.*)\)", line)[0]
-
-        if len(re.findall(r'"', args)) % 2 != 0:
-            print('** missing closing quotation **')
-            return
-
-        args = re.sub(
-            r',(?=(?:[^"]*"[^"]*")*[^"]*$)',
-            '',
-            args
-        )
-
-        commands[command](f'{cls_name} {args}')
 
     @staticmethod
     def __spliter(line: str):
