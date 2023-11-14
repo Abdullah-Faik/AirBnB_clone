@@ -62,6 +62,12 @@ class testFileStorage(unittest.TestCase):
         self.assertIn(f'{obj1.__class__.__name__}.{obj1.id}', all_objects)
         self.assertIn(f'{obj2.__class__.__name__}.{obj2.id}', all_objects)
 
+    def test__file_path(self):
+        '''this function tests _file_path(self)'''
+        self.assertEqual(self.storage._FileStorage__file_path, "file.json")
+    
+
+
 
 if __name__ == "__main__":
     unittest.main()
