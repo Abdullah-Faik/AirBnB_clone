@@ -119,10 +119,10 @@ class HBNBCommand(cmd.Cmd):
         try:
             del storage.all()[values["class_name"]+"."+values["id"]]
             storage.save()
-            # storage.reload()
+            storage.reload()
 
         except KeyError:
-            print("** instance id missing **")
+            print("** no instance found **")
 
     def help_destroy(self):
         """show help message for destroy command"""
@@ -163,6 +163,11 @@ class HBNBCommand(cmd.Cmd):
                 if fword == keys["class_name"]:
                     counter += 1
         print(counter)
+
+    def help_count(self):
+        """show help message for count command"""
+        print("counts the instances of a class")
+        print("[USAGE]:\t count <class name>")
 
     def help_all(self):
         """show help message for all command"""
@@ -215,28 +220,38 @@ class HBNBCommand(cmd.Cmd):
             function_names = "|".join(HBNBCommand.FuncNames_List)
             regex_pattern = (
                 r"\b(?:{})\.(?:{})\("
-                r"(?:(?:\"[^\"]*\"|'[^']*')\s*"
-                r"(?:,\s*(?:\"[^\"]*\"|'[^']*'))*)?\)"
-                ).format(class_names, function_names)
-
+                r"(?:"
+                r"(?:(?:\"[^\"]*\"|'[^']*')\s*,\s*)*"  # Match any number of arguments
+                r"(?:(?:\"[^\"]*\"|'[^']*')\s*=\s*(?:\"[^\"]*\"|'[^']*')\s*,\s*)*"  # Match any number of kwargs
+                r"(?:\"[^\"]*\"|'[^']*')\s*"  # Match the last argument if any
+                r")?"
+                r"\)"
+            ).format(class_names, function_names)
+            print("here")
             matches = re.findall(regex_pattern, line)
+            print(matches)
             if matches:
                 parts1 = matches[0].split(".", 1)
                 className = parts1[0]
+                print(className)
                 remains = parts1[1]
 
                 parts2 = remains.split("(", 1)
+                print(parts2)
                 functionName = parts2[0]
+                print(functionName)
                 remains = parts2[1]
                 remains = remains.replace(")", "")
                 remains = remains.replace(",", "")
 
                 myArguments = remains
+                print(myArguments)
 
                 if len(className) != 0 and len(functionName) != 0:
                     argumentsWithSpace = ""
                     if len(myArguments) != 0:
                         delimiter = r",\s*"
+            
                         argumentsWithSpace = re.sub(delimiter, " ",
                                                     myArguments)
                         newCommand = f"{className} {myArguments}"
@@ -251,11 +266,6 @@ class HBNBCommand(cmd.Cmd):
             return False
 
     def default(self, line: str):
-        # my notes on this methods:
-        # this method is worked fine when i nned to do
-        # commands doesn't need to send args
-        # but when i need to send args it's not working
-        # so i need to update this method to works with args and kwargs
 
         """anther way to call the command"""
         my_cmd = {"all()": self.do_all,
