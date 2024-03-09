@@ -69,8 +69,6 @@ class testFileStorage(unittest.TestCase):
     def test_0__objects(self):
         '''this function tests _objects(self)'''
         pass
-    
-
 
 
 if __name__ == "__main__":

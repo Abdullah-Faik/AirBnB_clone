@@ -221,10 +221,9 @@ class HBNBCommand(cmd.Cmd):
             regex_pattern = (
                 r"\b(?:{})\.(?:{})\("
                 r"(?:"
-                r"(?:(?:\"[^\"]*\"|'[^']*')\s*,\s*)*"  # Match any number of arguments
-                r"(?:(?:\"[^\"]*\"|'[^']*')\s*=\s*(?:\"[^\"]*\"|'[^']*')\s*,\s*)*"  # Match any number of kwargs
-                r"(?:\"[^\"]*\"|'[^']*')\s*"  # Match the last argument if any
-                r")?"
+                r"(?:(?:\"[^\"]*\"|'[^']*')\s*,\s*)*"
+                r"(?:(?:\"[^\"]*\"|'[^']*')\s*=\s*(?:\"[^\"]*\"|'[^']*')\s*,\s*)*"
+                r"(?:\"[^\"]*\"|'[^']*')\s*"
                 r"\)"
             ).format(class_names, function_names)
             print("here")
@@ -251,7 +250,7 @@ class HBNBCommand(cmd.Cmd):
                     argumentsWithSpace = ""
                     if len(myArguments) != 0:
                         delimiter = r",\s*"
-            
+
                         argumentsWithSpace = re.sub(delimiter, " ",
                                                     myArguments)
                         newCommand = f"{className} {myArguments}"
@@ -266,7 +265,6 @@ class HBNBCommand(cmd.Cmd):
             return False
 
     def default(self, line: str):
-
         """anther way to call the command"""
         my_cmd = {"all()": self.do_all,
                   "count()": self.do_count,
