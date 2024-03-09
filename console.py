@@ -226,7 +226,6 @@ class HBNBCommand(cmd.Cmd):
                 r"(?:\"[^\"]*\"|'[^']*')\s*"
                 r"\)"
             ).format(class_names, function_names)
-            print("here")
             matches = re.findall(regex_pattern, line)
             print(matches)
             if matches:
@@ -338,6 +337,7 @@ class HBNBCommand(cmd.Cmd):
             return float(value)
         except ValueError:
             return value
+
 
 
 if __name__ == '__main__':
